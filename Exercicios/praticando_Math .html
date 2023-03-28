@@ -1,0 +1,39 @@
+<title>JavaScript - Math - Metodos</title>
+</head>
+<body>
+
+    <h2> Utilizando Math - Metodos</h2>
+
+    <h3>Digite o nome completo: </h3><input 
+    type="text" 
+    id="nome" 
+    size="45" 
+    maxlength="45" 
+    onblur="critica();" 
+    />
+    <br/>
+    <br/>
+    <h3>Digite um numero:  </h3><input type="text" id="valor" size="10" maxlength="10" onblur="critica2();" />
+    <p id="msg"></p>
+
+<script>
+
+function critica(){
+	saida = document.getElementById("nome").value;	
+    novasaida = saida.trim().toUpperCase();		
+    document.getElementById("nome").value = novasaida.split(' ').filter((x) => x != '').join(' ');
+}	
+
+function critica2(){
+	saida = document.getElementById("valor").value;	
+    novasaida = saida.trim();
+    if ( novasaida.length > 0 && !isNaN(novasaida)) {
+        document.getElementById("msg").innerHTML = 'Tudo Bem';
+    }else {
+        document.getElementById("msg").innerHTML = 'Corrija!!!';
+    }	
+		
+}	
+</script>
+</body>
+</html>

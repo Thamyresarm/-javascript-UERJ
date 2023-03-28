@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Curso JavaScript</title>
+</head>
+
+<body id="id01" style="border:1px solid black;padding:4px">
+
+    <h2 id="id02"> Praticando appnedChild e inserBefore</h2>
+
+    <h3>Lista 1</h3>
+    <ul id="lista1">
+        <li>Astra</li>
+    </ul>
+
+    <h3>Lista 2</h3>
+    <ul id="lista2">
+        <li>Fiat 500</li>
+        <li>Onix</li>
+        <li>Maverick</li>
+    </ul>
+
+    <button onclick="transferir()">Clique aqui para transferir</button>
+
+    <script>        
+        function transferir() {
+
+            lista2 = document.getElementById('lista2');          
+            no = document.createElement("li");
+            no.appendChild(lista2.children[0]);
+            document.getElementById("lista1").appendChild(no);
+        }
+    </script>
+</body>
+
+</html>
