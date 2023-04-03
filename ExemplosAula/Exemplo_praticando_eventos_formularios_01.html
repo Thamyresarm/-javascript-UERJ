@@ -1,0 +1,19 @@
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+
+
+<h2  onmousedown="testaButton();"> Praticando Eventos do Formulário - 01</h2>
+Nome: <input type="text" id="nome" onchange="upperCase()" >
+
+<script>
+
+function upperCase(){
+      x = document.getElementById("nome");
+      x.value = x.value.toUpperCase();
+}
+</script>
+</body>
+</html>

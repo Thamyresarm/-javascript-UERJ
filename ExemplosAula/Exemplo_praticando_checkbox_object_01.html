@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body>
+
+<h2> Praticando Checkbox Object 01</h2>
+
+  Qual o seu sanduíche preferido?<br>
+  <input type='checkbox' name="sanduiche" value="mortadela">Mortadela<br>
+  <input type='checkbox' name="sanduiche" value="salame">Salame<br>
+  <input type='checkbox' name="sanduiche" value="hamburguer">Hamburguer<br>
+  <input type='checkbox' name="sanduiche" value="cachorro">Cachorro Quente<br>
+  
+  
+  Qual o seu molho preferido?<br>
+  <input type='checkbox' name="molho" value="mostarda" >Mostarda<br>
+  <input type='checkbox' name="molho" value="ketchup" >Ketchup<br>
+  <input type='checkbox' name="molho" value="barbecue" >Barbecue<br>
+  
+  <br>
+  <br>
+
+	<input type="button" value="Clique para Enviar sanduiche e molho" onclick="testaSanduiche()">
+  
+  <br>
+  
+  
+  
+  <p id='msg1'></p>
+
+<script>
+
+
+function testaSanduiche(){	
+    saidaSanduiches=[];
+	saidaMolhos=[];
+    ticou = false;
+	elementos = document.getElementsByName('sanduiche');
+	for (i=0; i<elementos.length; i++){
+		if(elementos[i].checked){
+		   ticou = true;
+		   saidaSanduiches.push(elementos[i].value);		   
+		}
+	}
+	if(ticou==false){
+		document.getElementById("msg1").innerHTML='Tem que escolher algum sanduíche antes de enviar!!!' + '</br>'; 
+	}
+	else{
+	
+		ticou = false;
+		elementos = document.getElementsByName('molho');
+		for (i=0; i<elementos.length; i++){
+			if(elementos[i].checked){
+				ticou = true;
+				saidaMolhos.push(elementos[i].value);		   
+			}
+		}
+		if(ticou==false){
+			document.getElementById("msg1").innerHTML='Tem que escolher algum molho antes de enviar!!!' + '</br>'; 
+		}
+		else{
+			document.getElementById("msg1").innerHTML='Partiu Sanduiches=>  ' + saidaSanduiches.join(' ,') + ', com Molhos => ' + saidaMolhos.join(' ,') + '</br>';
+		}
+		
+	}
+	
+}
+
+</script>
+
+</body>
+</html>

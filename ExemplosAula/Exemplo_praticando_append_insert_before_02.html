@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body id="id01" style="border:1px solid black;padding:4px">
+
+<h2  id="id02" > Praticando appendChild e insertBefore</h2>
+
+<ul id="lista">
+  <li>Astra</li>
+  <li>Fiat 500</li>
+  <li>Onix</li>
+  <li>Maverick</li>
+</ul>
+
+
+<button onclick="inserir()">Clique aqui para inserir antes</button>
+
+<script>
+
+var ano=1970;
+function inserir() {
+
+	no = document.createElement("li");
+	texto = document.createTextNode("Opala " + ano);
+	ano++;
+	no.appendChild(texto);
+
+	lista = document.getElementById("lista");
+	lista.insertBefore(no,lista.children[0]);
+}
+</script>
+</body>
+</html>

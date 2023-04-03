@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body>
+
+<h2> Praticando Radio Button Object 01</h2>
+
+  Qual o seu sanduíche preferido?<br>
+  <input type="radio" name="sanduiche" value="mortadela" onclick="checkUncheck(this.name,this.value);">Mortadela<br>
+  <input type="radio" name="sanduiche" value="salame" onclick="checkUncheck(this.name,this.value);">Salame<br>
+  <input type="radio" name="sanduiche" value="hamburguer" onclick="checkUncheck(this.name,this.value);">Hamburguer<br>
+  <input type="radio" name="sanduiche" value="cachorro" onclick="checkUncheck(this.name,this.value);">Cachorro Quente<br>
+  
+  
+  Qual o seu molho preferido?<br>
+  <input type="radio" name="molho" value="mostarda" onclick="checkUncheck(this.name,this.value);">Mostarda<br>
+  <input type="radio" name="molho" value="ketchup" onclick="checkUncheck(this.name,this.value);">Ketchup<br>
+  <input type="radio" name="molho" value="barbecue" onclick="checkUncheck(this.name,this.value);">Barbecue<br>
+  
+  <br>
+  <br>
+
+	<input type="button" value="Clique para Enviar sanduiche" onclick="testaSanduiche()">
+  
+  <br>
+  
+  <input type="button" value="Clique para Enviar molho" onclick="testaMolho()">
+  
+  <p id='msg1'></p>
+
+<script>
+function checkUncheck(quem,valor) {
+	document.getElementById("msg1").innerHTML='quem ? ' + quem +  ' valor ? ' + valor + '</br>';  
+}
+function testaSanduiche(){
+    ticou = false;
+	elementos = document.getElementsByName('sanduiche');
+	for (i=0; i<elementos.length; i++){
+		if(elementos[i].checked){
+		   ticou = true;
+		   break;
+		}
+	}
+	if(ticou==false){
+		document.getElementById("msg1").innerHTML='Tem que escolher algum sanduíche antes de enviar!!!' + '</br>'; 
+	}
+	else{
+		document.getElementById("msg1").innerHTML='Partiu Sanduiche!!!' + '</br>';
+	}
+	
+}
+function testaMolho(){
+    ticou = false;
+	elementos = document.getElementsByName('molho');
+	for (i=0; i<elementos.length; i++){
+		if(elementos[i].checked){
+		   ticou = true;
+		   break;
+		}
+	}
+	if(ticou==false){
+		document.getElementById("msg1").innerHTML='Tem que escolher algum molho antes de enviar!!!' + '</br>'; 
+	}
+	else{
+		document.getElementById("msg1").innerHTML='Partiu Molho!!!' + '</br>';
+	}
+	
+}
+</script>
+
+</body>
+</html>

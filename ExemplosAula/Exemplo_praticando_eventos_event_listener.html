@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body id="id01" style="border:1px solid black;padding:4px">
+
+<h2  id="id02" > Praticando Eventos do Mouse com Event Listener - Clique aqui com algum botão do mouse</h2>
+
+
+
+<p id='msg1'></p>
+<p id='msg2'></p>
+<p id='msg3'></p>
+<p id='msg4'></p>
+<p id='msg5'></p>
+
+
+<script>
+
+document.getElementById("id01").addEventListener("mousemove", testaMove);
+document.getElementById("id02").addEventListener("mousedown", testaButton);
+document.getElementById("id02").addEventListener("mouseover", function() {minhaSaida = document.getElementById("id02");minhaSaida.style.color = "red";});
+document.getElementById("id02").addEventListener("mouseout", function() {minhaSaida = document.getElementById("id02");minhaSaida.style.color = "black";});
+
+
+
+function testaMove(){
+ document.getElementById("msg1").innerHTML="Propriedade client===>  x= " + event.clientX + " y= " + event.clientY;
+ document.getElementById("msg2").innerHTML="Propriedade offset===>  x= " + event.offsetX + " y= " + event.offsetY;
+ document.getElementById("msg3").innerHTML="Propriedade page===>  x= " + event.pageX + " y= " + event.pageY;
+ document.getElementById("msg4").innerHTML="Propriedade screen===>  x= " + event.screenX + " y= " + event.screenY;
+ 
+}
+function testaButton(){  
+	document.getElementById("msg5").innerHTML="Propriedade button===>  botao= " + event.button ;
+}
+
+
+</script>
+</body>
+</html>

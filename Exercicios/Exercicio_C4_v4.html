@@ -7,7 +7,7 @@
 <body>
 
 
-    <div class="modal_login">
+    <div class="modal_login"id="telaEntradaDados"> 
         <fieldset>
             <label for="nome">Nome e Sobrenome</label>
             <input type="text" name="nome" id="nome" size="40" maxlength="40" title="Maximo 40 caracteres"
@@ -51,28 +51,56 @@
                 style="color:#ffffff;background-color:#55587D" disabled />
             <p id="msgcep" style="font-size:100%;color:#ff0000"></p>
 
-
             <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha" size="12" maxlength="12" title="Entre 8 e 12 caracteres" 
-            autocomplete="off" onkeydown="msg1();" >
+            <input type="password" name="senha" id="senha" size="12" maxlength="12" title="Entre 8 e 12 caracteres"
+                autocomplete="off" onkeydown="msg1();">
             <p id="msgsenha" style="font-size:100%;color:#ff0000"></p>
-      
+
             <label for="senha">Repita a Senha</label>
             <p></p>
             <input type="password" name="confirmaSenha" id="confirmaSenha" size="12" maxlength="12"
-              title="Entre 8 e 12 caracteres" autocomplete="off" onkeydown="msg2();">
+                title="Entre 8 e 12 caracteres" autocomplete="off" onkeydown="msg2();">
             <p id="msgconfirmaSenha" style="font-size:100%;color:#ff0000"></p>
-      
+
             <p id="msgCapsLock" style="font-size:100%;color:#ff9100d8"></p>
 
-            <input type="submit" value="Enviar" onclick="crticarSenha()" id="botaoLogin" />
+            <input type="submit" value="Enviar" onclick="criticarSenha()" id="botaoLogin" />
             <p></p>
-            <p id="msgerrosenha" style="text-align:left;color:#ff0000;font-size:100%"></p>
+            <p id="msgfinal" style="text-align:left;color:#ff0000;font-size:100%"></p>
 
         </fieldset>
 
     </div>
 
+    <div class="modal_login" id="telaMenuCarros" style="display:none">
+        <h2 id="tituloMenu"></h2>
+        <fieldset>
+
+            <input type="submit" name="fiat" id="fiat" value="Fiat" onclick="enviarMenu(this.name)">
+            <input type="submit" name="gm" id="gm" value="GM" onclick="enviarMenu(this.name)">
+            <input type="submit" name="vw" id="vw" value="VW" onclick="enviarMenu(this.name)">
+            <input type="submit" name="ford" id="ford" value="Ford" onclick="enviarMenu(this.name)">
+
+            <p></p>
+            <p id="msgmenu" style="text-align:left;color:#ff0000;font-size:100%"></p>
+
+        </fieldset>
+
+
+        <table id="tabelaModelos" style="font-size:2.0vw">
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Ano</th>
+                <th>Cor</th>
+                <th>Ver+</th>	
+            </tr>
+        </table>
+        <p id="msgModelos" style="font-size:2.0vw;color:#ff0000"></p>
+        <p id="msgModeloRetorno" style="font-size:2.0vw;color:#B9B9B9"></p>	
+
+
+    </div>
 
     <script>
 
@@ -161,10 +189,48 @@
 
         /*-----------------------------------------------------------------------*/
 
+        function pegaDetalhe(id){
+	 
+     criaRequest();  				
+     var url = "http://152.92.181.90:8080/CursoJavaScript/PegaDetalhe";
+     //var url = "http://192.168.1.65:8080/CursoJavaScript/PegaDetalhe";
+     document.getElementById("msgModeloRetorno").innerHTML="";
+     request.open("POST", url, true);     
+     request.onreadystatechange = pegaDetalheRetorno;
+     request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+     request.send("id=" + id);	
+      
+      
+  }
+  /*-----------------------------------------------------------------------*/ 	
+  function pegaDetalheRetorno(){
+  
+       if (request.readyState ==4) {
+       
+       if (request.status == 200) { 
+        
+            detalhe = eval('(' + request.responseText + ')');  
+            
+            
+                   if(detalhe.erro==false){			
+                     document.getElementById("msgModeloRetorno").innerHTML="Preço: " + ((detalhe.preco.toFixed(2)).toString()).replace(".",",") + '</br>' + "Km: " +  detalhe.km + '</br>';								
+                   }
+                 else{
+                     document.getElementById("msgModeloRetorno").innerHTML="Modelos não Encontrados!";				
+                 }
+         }				
+                 
+     }	
+ 
+ 
+     
+ 
+ }	
+ /*-----------------------------------------------------------------------------------------*/
+
         function apagaMensagem(id) {
             document.getElementById('msg' + id).innerHTML = '';
         }
-        
         function testaTecla(id) {
 
             valor = document.getElementById(id).value;
@@ -221,7 +287,7 @@
                     document.getElementById('msg' + id).innerHTML = 'Digite um ' + id + ' válido';
                     //return false;
                 } else {
-                    pegaCEP();                    
+                    pegaCEP();
                     apagaMensagem(id);
                     //return true;
                 }
@@ -242,89 +308,192 @@
 
 
 
-// validando as senhas
+        // validando as senhas
 
-function verificaTamanho(senha) {
-      if (senha.length < 8 || senha.length > 12) {
-        return 'Minimo 8 caracteres e máximo 12';
-      } else return '';
-    }
-
-    function verificaCaracteres(senha) {
-
-      let numerico = 0;
-      let alfabeto = 0;
-      let hasSimbols = 0;
-      let simbols = ["#", "$", "@", "&"];
-
-      for (car of senha) {
-        if (isNaN(car)) {
-
-          isSimbol = false;
-
-          for (simbol of simbols) {
-            if (car === simbol) {
-              isSimbol = true;
-              hasSimbols += 1;
-            }
-          }
-
-          if (!isSimbol) {
-            alfabeto += 1;
-          }
-
-        } else {
-          numerico += 1;
+        function verificaTamanho(senha) {
+            if (senha.length < 8 || senha.length > 12) {
+                return 'Minimo 8 caracteres e máximo 12';
+            } else return '';
         }
-      }
 
-      if ((alfabeto == 0) || (numerico == 0) || (hasSimbols == 0)) {
-        return 'A senha deve ter ao menos uma letra, um caracter especial e um número';
-      } else return '';
-    }
+        function verificaCaracteres(senha) {
 
-    function verificaCapsLock(){
-      if (window.event.getModifierState(("CapsLock"))) {
-        document.getElementById("msgCapsLock").innerHTML = "Capslock acionada!!";
-      }else{
-        document.getElementById("msgCapsLock").innerHTML = "";
-      }
-    }
+            let numerico = 0;
+            let alfabeto = 0;
+            let hasSimbols = 0;
+            let simbols = ["#", "$", "@", "&"];
 
-    function msg1() {
-      senha = document.getElementById("senha").value;
-      
-      verificaCapsLock();
+            for (car of senha) {
+                if (isNaN(car)) {
 
-      if (verificaTamanho(senha) == '') {  
-        document.getElementById("msgsenha").innerHTML = verificaCaracteres(senha);
-      } else {
-        document.getElementById("msgsenha").innerHTML = verificaTamanho(senha);
-      }
-    }
+                    isSimbol = false;
 
-    function msg2() {
-      confirmaSenha = document.getElementById("confirmaSenha").value;
+                    for (simbol of simbols) {
+                        if (car === simbol) {
+                            isSimbol = true;
+                            hasSimbols += 1;
+                        }
+                    }
 
-      verificaCapsLock();
+                    if (!isSimbol) {
+                        alfabeto += 1;
+                    }
 
-      if (verificaTamanho(confirmaSenha) == '') {
-        document.getElementById("msgconfirmaSenha").innerHTML = verificaCaracteres(confirmaSenha);
-      } else {
-        document.getElementById("msgconfirmaSenha").innerHTML = verificaTamanho(confirmaSenha);
-      }
-    }
+                } else {
+                    numerico += 1;
+                }
+            }
 
-    function criticarSenha() {
-      senha = document.getElementById("senha").value;
-      confirmaSenha = document.getElementById("confirmaSenha").value;
+            if ((alfabeto == 0) || (numerico == 0) || (hasSimbols == 0)) {
+                return 'A senha deve ter ao menos uma letra, um caracter especial e um número';
+            } else return '';
+        }
 
-      if (senha === confirmaSenha) {
-        document.getElementById("msgerrosenha").innerHTML = 'Senhas Iguais!';
-      } else {
-        document.getElementById("msgerrosenha").innerHTML = 'Senhas Diferentes!!!';
-      }
-    }
+        function verificaCapsLock() {
+            if (window.event.getModifierState(("CapsLock"))) {
+                document.getElementById("msgCapsLock").innerHTML = "Capslock acionada!!";
+            } else {
+                document.getElementById("msgCapsLock").innerHTML = "";
+            }
+        }
+
+        function msg1() {
+            senha = document.getElementById("senha").value;
+
+            verificaCapsLock();
+
+            if (verificaTamanho(senha) == '') {
+                document.getElementById("msgsenha").innerHTML = verificaCaracteres(senha);
+            } else {
+                document.getElementById("msgsenha").innerHTML = verificaTamanho(senha);
+            }
+        }
+
+        function msg2() {
+            confirmaSenha = document.getElementById("confirmaSenha").value;
+
+            verificaCapsLock();
+
+            if (verificaTamanho(confirmaSenha) == '') {
+                document.getElementById("msgconfirmaSenha").innerHTML = verificaCaracteres(confirmaSenha);
+            } else {
+                document.getElementById("msgconfirmaSenha").innerHTML = verificaTamanho(confirmaSenha);
+            }
+        }
+
+        function criticarSenha() {
+            senha = document.getElementById("senha").value;
+            confirmaSenha = document.getElementById("confirmaSenha").value;
+
+            if (senha === confirmaSenha) {
+                enviarDadosEntrada();
+            } else {
+                document.getElementById("msgerrosenha").innerHTML = 'Senhas Diferentes!!!';
+            }
+        }
+
+    function enviarDadosEntrada(){
+            criaRequest();
+
+            var url = "http://152.92.181.90:8080/CursoJavaScript/ValidaDadosEntrada";
+            //var url = "http://192.168.1.65:8080/CursoJavaScript/ValidaDadosEntrada";
+            request.open("POST", url, true);
+            request.onreadystatechange = retornoEnviarDadosEntrada;
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            request.send('nome=' + document.getElementById("nome").value +
+                '&cpf=' + document.getElementById("cpf").value +
+                '&telefone=' + document.getElementById("telefone").value +
+                '&logradouro=' + document.getElementById("logradouro").value +
+                '&localidade=' + document.getElementById("localidade").value +
+                '&cidade=' + document.getElementById("cidade").value +
+                '&uf=' + document.getElementById("uf").value +
+                '&numero=' + document.getElementById("numero").value +
+                '&complemento=' + document.getElementById("complemento").value +
+                '&cep=' + document.getElementById("cep").value +
+                '&senha=' + document.getElementById("senha").value +
+                '&confirmaSenha=' + document.getElementById("confirmaSenha").value);
+
+        }
+        function retornoEnviarDadosEntrada() {
+
+            if (request.readyState == 4) {
+                if (request.status == 200) {
+                    var retorno = eval('(' + request.responseText + ')');
+                    if (retorno.erro == false) {
+                        document.getElementById('telaEntradaDados').style.display = "none";
+                        document.getElementById('telaMenuCarros').style.display = "block";
+                        document.getElementById('tituloMenu').innerHTML = retorno.nome + '</br>' + '</br>' + 'Qual o seu futuro carro?';
+                    }
+                    else {
+                        document.getElementById('msgfinal').innerHTML = retorno.msg;
+                    }
+                }
+
+            }
+        }
+        function enviarMenu(name) {
+
+            criaRequest();
+            var url = "http://152.92.181.90:8080/CursoJavaScript/EnviarMenu";
+            //var url = "http://192.168.1.65:8080/CursoJavaScript/EnviarMenu";
+            request.open("POST", url, true);
+            request.onreadystatechange = retornoEnviarMenu;
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            request.send('menu=' + name);
+
+
+        }
+        function retornoEnviarMenu() {
+
+            if (request.readyState == 4) {
+                if (request.status == 200) {
+                    var retorno = eval('(' + request.responseText + ')');
+                    if (retorno.erro == false) {
+                        document.getElementById('telaEntradaDados').style.display = "none";
+                        document.getElementById('telaMenuCarros').style.display = "block";
+                        document.getElementById('msgModelos').innerHTML = "";
+
+
+                        table = document.getElementById("tabelaModelos");
+
+                        if (table.rows.length > 1) {
+                            for (var i = table.rows.length - 1; i > 0; i--) {
+                                table.deleteRow(i);
+                            }
+                        }
+
+                        if (retorno.erro == false) {
+
+                            if (retorno.Carros.length == 0) {
+                                document.getElementById('msgModelos').innerHTML = retorno.msg;
+                            }
+                            else {
+                                for (i = 0; i < retorno.Carros.length; i++) {
+                                    row = table.insertRow(i + 1);
+                                    cell1 = row.insertCell(0);
+                                    cell2 = row.insertCell(1);
+                                    cell3 = row.insertCell(2);
+                                    cell4 = row.insertCell(3);
+                                    cell5 = row.insertCell(4);
+
+                                    cell1.innerHTML = retorno.Carros[i].marca;
+                                    cell2.innerHTML = retorno.Carros[i].modelo;
+                                    cell3.innerHTML = retorno.Carros[i].ano;
+                                    cell4.innerHTML = retorno.Carros[i].cor;
+                                    cell5.innerHTML = "<a href='#Curso' onclick='pegaDetalhe(" + retorno.Carros[i].id + ")'>Ver Detalhes!</a>";
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        document.getElementById('msgModelos').innerHTML = retorno.msg;
+                    }
+                }
+
+            }
+        }
+
+
 
     </script>
 </body>
@@ -420,6 +589,7 @@ function verificaTamanho(senha) {
         background-color: #fb8500;
         color: #12174C;
         font-size: 1.6vw;
+        cursor: pointer;
     }
 </style>
 

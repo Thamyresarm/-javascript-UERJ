@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body id="id01" style="border:1px solid black;padding:4px">
+
+<h2  id="id02" > Praticando Radio Button Object 02</h2>
+
+<div id='01'>
+<label for="carros">Astra</label>
+<input type="radio" name="carros" value="Astra" >
+
+<label for="carros">Fiat 500</label>
+<input type="radio" name="carros" value="Fiat 500" >
+
+
+</div>
+
+</br>
+<input type="button" id='botao' value="Clique para criar mais um radio" onclick="criarRadio()">
+
+
+<script>
+
+function criarRadio(){
+	div = document.getElementById('01');
+	doc=document.createElement("label");
+	doc.innerHTML="Onix";
+	div.appendChild(doc);
+
+	doc=document.createElement("input");
+	doc.setAttribute("type","radio");
+	doc.setAttribute("name","carros");
+	doc.setAttribute("value","Onix");
+	
+	div.appendChild(doc);
+	
+	document.getElementById("botao").disabled = true;
+
+}
+
+
+
+</script>
+</body>
+</html>

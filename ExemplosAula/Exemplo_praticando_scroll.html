@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div {
+  border: 1px solid black;
+  width: 250px;
+  height: 500px;
+  overflow: scroll;
+}
+</style>
+</head>
+<body>
+<h1>Praticando Scroll</h1>
+<p>Stairway to heaven - Led Zeppelin</p>
+
+<div onscroll="rolaAih()" id="teste">
+There's a lady who's sure</br>
+All that glitters is gold</br>
+And she's buying a stairway to heaven</br>
+When she gets there she knows</br>
+If the stores are all closed</br>
+With a word she can get what she came for</br>
+Ooh ooh ooh ooh ooh</br>
+And she's buying a stairway to heaven</br>
+There's a sign on the wall</br>
+But she wants to be sure</br>
+'Cause you know, sometimes words have two meanings</br>
+In a tree by the brook</br>
+There's a songbird who sings</br>
+Sometimes all of our thoughts are misgiven</br>
+Ooh, it makes me wonder</br>
+Ooh, it makes me wonder</br>
+There's a feeling I get</br>
+When I look to the west</br>
+And my spirit is crying for leaving</br>
+In my thoughts I have seen</br>
+Rings of smoke through the trees</br>
+And the voices of those who stand looking</br>
+Ooh, it makes me wonder</br>
+Ooh, it really makes me wonder</br>
+And it's whispered that soon</br>
+If we all call the tune</br>
+Then the piper will lead us to reason</br>
+And a new day will dawn</br>
+For those who stand long</br>
+And the forests will echo with laughter</br>
+Oh whoa-whoa-whoa, oh-oh</br>
+If there's a bustle in your hedgerow, don't be alarmed now</br>
+It's just a spring clean for the May Queen</br>
+Yes, there are two paths you can go by, but in the long run</br>
+And there's still time to change the road you're on</br>
+And it makes me wonder</br>
+Oh, whoa</br>
+Your head is humming and it won't go</br>
+In case you don't know</br>
+The piper's calling you to join him</br>
+Dear lady, can you hear the wind blow?</br>
+And did you know</br>
+Your stairway lies on the whispering wind?</br>
+And as we wind on down the road</br>
+Our shadows taller than our soul</br>
+There walks a lady we all know</br>
+Who shines white light and wants to show</br>
+How everything still turns to gold</br>
+And if you listen very hard</br>
+The tune will come to you at last</br>
+When all are one and one is all, yeah</br>
+To be a rock and not to roll</br>
+And she's buying a stairway to heaven</div>
+
+<p>Rolou... <span id="saida1">0</span> vezes.</p>
+<p id="saida2"></p>
+
+<script>
+x = 0;
+function rolaAih(){
+  document.getElementById("saida1").innerHTML = x += 1;
+  elemento = document.getElementById("teste");
+  y = elemento.scrollTop;  
+  document.getElementById("saida2").innerHTML ="Posição: " +  y.toFixed(); 
+}
+</script>
+
+</body>
+</html>

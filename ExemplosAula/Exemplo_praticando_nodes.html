@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>JavaScript - Praticando Nodes</title>
+</head>
+<body>
+<h2>Utilizando Nodes</h2>
+<ul id="genios"><li id="item1">Faraday</li><li id="item2">LaPlace</li><li id="item3">Tesla</li><li id="item4">Newton</li>
+</ul>
+<script>
+
+a = document.body.parentNode.nodeName; 
+b = document.head.parentNode.nodeName; 
+
+document.write('Pai do body => ' + a + '<br>');
+document.write('<br>');
+
+document.write('Pai do head => ' + b + '<br>');
+document.write('<br>');
+
+x = document.getElementById("item1").parentNode.nodeName;
+document.write('Pai do item1 => ' + x + '<br>');
+document.write('<br>');
+  
+y = document.getElementById("genios").parentNode.nodeName;
+document.write('Pai de genios => ' +y + '<br>');
+document.write('<br>');
+ 
+nodeList = document.body.childNodes;
+document.write('Início body - nós filhos' + '<br>');
+texto = "";
+for (i = 0; i < nodeList.length; i++) {
+  texto += nodeList[i].nodeName + "<br>";
+}
+document.write(texto + '<br>');
+document.write('<br>');
+
+element = document.getElementById("genios");
+numb = element.childNodes;
+texto = "";
+for (i = 0; i < numb.length; i++) {
+  texto += numb[i].nodeName + "<br>";
+}
+document.write('Início genios - nós filhos ' + '<br>');
+document.write(texto + '<br>');
+document.write('<br>');
+
+
+texto = document.getElementById("genios").firstChild.innerHTML;
+document.write(' firstChild genios ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("item1").nextSibling.innerHTML; 
+document.write(' nextSibling ' + texto + '<br>');
+document.write('<br>');
+</script>
+</body>
+</html>

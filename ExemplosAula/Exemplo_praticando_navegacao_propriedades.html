@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>JavaScript - Praticando Nodes</title>
+</head>
+<body>
+<h2>Utilizando Nodes</h2>
+<ul id="genios">
+	<li id="item1">Faraday</li>
+	<li id="item2">LaPlace</li>
+	<li id="item3">Tesla</li>
+	<li id="item4">Newton</li>
+</ul>
+<script>
+
+document.write('Elementos filhos de genios ==> ' + document.getElementById("genios").childElementCount  + '<br>');
+document.write('<br>');
+
+
+document.write('Inicio head.children' + '<br>');
+
+nodeList = document.head.children;
+document.write('<br>');
+texto = "";
+for (i = 0; i < nodeList.length; i++) {
+  texto += nodeList[i].tagName + "<br>";     
+}
+document.write(texto  + '<br>');
+document.write('<br>');
+
+
+document.write('Inicio body.children' + '<br>');
+
+nodeList = document.body.children;
+document.write('<br>');
+texto = "";
+for (i = 0; i < nodeList.length; i++) {
+  texto += nodeList[i].tagName + "<br>";     
+}
+document.write(texto  + '<br>');
+document.write('<br>');
+
+
+
+texto = document.getElementById("genios").firstElementChild.innerHTML;
+document.write(' firstChild genios  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("item1").nextElementSibling.innerHTML; 
+document.write(' nextSibling item1  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("item1").nextElementSibling.tagName; 
+document.write(' nextSibling item1 tagName  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("item2").previousElementSibling.innerHTML; 
+document.write(' previousElementSibling item2  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("genios").lastElementChild.innerHTML; 
+document.write(' lastElementChild genios  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.getElementById("genios").lastElementChild.tagName; 
+document.write(' lastElementChild genios tagname  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.body.firstElementChild.tagName; 
+document.write(' firstElementChild body tagname  ==> ' + texto + '<br>');
+document.write('<br>');
+
+texto = document.head.firstElementChild.tagName; 
+document.write(' firstElementChild head tagname  ==> ' + texto + '<br>');
+document.write('<br>');
+
+
+</script>
+</body>
+</html>
