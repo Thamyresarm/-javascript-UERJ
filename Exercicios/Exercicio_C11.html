@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Curso JavaScript</title>
+</head>
+<body>
+
+<h2> Praticando Ajax 04 </h2>
+
+<div class="modal_login" id="telaMenuSanduiches" style="display:block">
+
+  Quais sanduíches preferidos?<br><br>
+  <input type='radio' name="sanduiche" value="mortadela">Mortadela<br>
+  <input type='radio' name="sanduiche" value="salame">Salame<br>
+  <input type='radio' name="sanduiche" value="hamburguer">Hamburguer<br>
+  <input type='radio' name="sanduiche" value="cachorro">Cachorro Quente<br>
+  <input type='radio' name="sanduiche" value="queijo">Queijo<br>
+  <input type='radio' name="sanduiche" value="podrao">Podrão<br>
+  <br>
+  <input type="button" value="Clique para selecionar os molhos" onclick="testaSanduiche()">
+   <p id='msg1'></p>
+  
+</div>
+ 
+<div class="modal_login" id="telaMenuMolhos" style="display:none">
+   Quais os molhos preferidos?<br>
+  <table id="tabelaMolhos"  >						
+  </table>	
+  <input type="button" value="Clique para ver o que deu" onclick="testaMolho()">
+  <p id='msg2'></p>
+</div>
+
+ 
+
+<script>
+/*-----------------------------------------------------------------------------------------*/
+function criaRequest(){
+	   try {
+     		request = new XMLHttpRequest();
+   			} catch (trymicrosoft) {
+     			try {
+       				request = new ActiveXObject("Msxml2.XMLHTTP");
+     			} catch (othermicrosoft) {
+       				try {
+         				request = new ActiveXObject("Microsoft.XMLHTTP");
+       					} 	catch (failed) {
+         						request = null;
+       						}
+     				}
+   				}
+   		if (request == null)
+     		alert("Erro na criação do Objeto Request!");
+     	
+}
+/*-----------------------------------------------------------------------------------------*/ 
+
+function testaSanduiche(){	
+    ticou = false;
+	document.getElementById("msg1").innerHTML="";
+	document.getElementById("msg2").innerHTML="";
+	elementos = document.getElementsByName('sanduiche');
+	for (i=0; i<elementos.length; i++){
+		if(elementos[i].checked){
+		   ticou = true;
+		   sanduiche = elementos[i].value;		   
+		}
+	}
+	if(ticou==false){
+		document.getElementById("msg2").innerHTML='Tem que escolher algum sanduíche antes de enviar!!!' + '</br>'; 
+	}
+	else{
+		sanduiche=juntaSanduiches(sanduiche);
+		pegaSanduichesMolhos(sanduiche);
+	}
+	
+}
+/*-----------------------------------------------------------------------------------------*/
+function juntaSanduiches(pedaco){
+	return "&sanduiches=" + pedaco;
+}
+/*-----------------------------------------------------------------------------------------*/
+function testaMolho(){
+		molhos=[];	
+		ticou = false;
+		document.getElementById("msg1").innerHTML="";
+		elementos = document.getElementsByName('molhos');
+		for (i=0; i<elementos.length; i++){
+			if(elementos[i].checked){
+				ticou = true;
+				molhos.push(elementos[i].value);		   
+			}
+		}
+		if(ticou==false){
+			document.getElementById("msg2").innerHTML='Tem que escolher algum molho antes de enviar!!!' + '</br>'; 
+		}
+		else{
+			molhos=molhos.map(juntaMolhos);
+		    pegaResultado(molhos.join(',').substring(1));
+		}		
+	
+
+}
+/*-----------------------------------------------------------------------------------------*/
+function juntaMolhos(pedaco){
+	return "&molhos=" + pedaco;
+}
+/*-----------------------------------------------------------------------------------------*/
+ /*----------------------------------------------------------------------*/ 
+ function pegaResultado(molhos){
+	 
+	criaRequest();  				
+	var url = "http://152.92.181.90:8080/CursoJavaScript/PegaResultado";
+	//var url = "http://192.168.1.65:8080/CursoJavaScript/PegaResultado";
+	request.open("POST", url, true);     
+	request.onreadystatechange = preencheResultado;
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+	request.send(molhos);	
+	 
+	 
+ }
+ /*-----------------------------------------------------------------------*/ 	
+ function preencheResultado(){
+	saida='';
+	
+  	if (request.readyState ==4) {
+  	
+      if (request.status == 200) { 
+       
+       	retorno = eval('(' + request.responseText + ')');  
+				
+				
+       	
+      			if(retorno.erro==false){
+				
+					if(retorno.Molhos.length==0){
+						document.getElementById('msg2').innerHTML=retorno.msg;
+					}
+				    else{
+														
+						for (i=0; i<retorno.Molhos.length; i++){						
+								saida+= retorno.Molhos[i].sabor + '<br>';								
+									
+						}
+
+						document.getElementById('msg2').innerHTML = saida;
+					}	
+									
+					
+      			}
+				else{
+					document.getElementById("msg1").innerHTML="Sem molhos!";				
+				}
+		}				
+				
+	}	
+
+
+	
+
+}	
+/*----------------------------------------------------------------------*/ 
+/*----------------------------------------------------------------------*/ 
+ function pegaSanduichesMolhos(sanduiches){
+	 
+	criaRequest();  				
+	var url = "http://152.92.181.90:8080/CursoJavaScript/PegaMolhos";
+	//var url = "http://192.168.1.65:8080/CursoJavaScript/PegaMolhos";
+	request.open("POST", url, true);     
+	request.onreadystatechange = preencheSanduichesMolhos;
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+	request.send(sanduiches);	
+	 
+	 
+ }
+ /*-----------------------------------------------------------------------*/ 	
+ function preencheSanduichesMolhos(){
+ 
+  	if (request.readyState ==4) {
+  	
+      if (request.status == 200) { 
+       
+       	retorno = eval('(' + request.responseText + ')');  
+				document.getElementById('telaMenuMolhos').style.display="block";
+				table = document.getElementById("tabelaMolhos");	
+
+				if(table.rows.length>1){
+					table.innerHTML='';					
+				}	
+				
+       	
+      			if(retorno.erro==false){
+				
+					if(retorno.Molhos.length ==0){
+						document.getElementById('msg2').innerHTML=retorno.msg;
+					}
+				            else{
+								for (i=0; i<retorno.Molhos.length; i++){						
+									row = table.insertRow(i);							
+									cell1 = row.insertCell(0);											
+									cell1.innerHTML = '<input type="checkbox" name="molhos" value="' + retorno.Molhos[i].sabor + '">' + retorno.Molhos[i].sabor + '<br>';	
+									
+									
+								}	
+							}	
+									
+					
+      			}
+				else{
+					document.getElementById("msg1").innerHTML="Sem molhos!";				
+				}
+		}				
+				
+	}	
+
+
+	
+
+}	
+/*----------------------------------------------------------------------*/ 
+
+</script>
+<style>
+.modal_login_titulo h1{
+  color:#ffffff;  
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 20%;
+  width: 35%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color:#12174C;
+  padding-top: 10px;
+  padding-left:20px;
+  margin: 1% auto 15% auto;
+  border-radius:10px;
+}
+.modal_login{
+  color:#12174C;
+  //position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 0%;
+  width: 75%; /* Full width */
+  height: 70%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: #ffffff;
+  padding-top: 0px;
+  padding-left:0px;
+  margin: 0% auto 10% auto;
+  border-radius:10px;
+}
+</style>
+</body>
+</html>

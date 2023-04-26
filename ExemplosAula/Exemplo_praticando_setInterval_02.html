@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Praticando o método setInterval() - 02</h1>
+
+<p id="relogio"></p>
+
+<button onclick="chega()" style="display:none" id="chega">Clique para parar o relógio</button>
+
+<button onclick="continua()" id="continua" style="display:none" >Clique para continuar</button>
+
+
+<script>
+relogio = setInterval(meuRelogio, 1000);
+
+function meuRelogio() {
+  data = new Date();
+  document.getElementById("relogio").style.color="red";
+  document.getElementById("relogio").style.fontSize="3vw";
+  document.getElementById("relogio").style.fontWeight="bold";
+  document.getElementById("relogio").innerHTML = data.toLocaleTimeString();
+  document.getElementById("chega").style.display="block";
+}
+function chega(){
+	document.getElementById("continua").style.display="block";
+	document.getElementById("chega").style.display="none";
+	clearInterval(relogio);
+}
+
+function continua(){
+	relogio = setInterval(meuRelogio, 1000);
+	document.getElementById("continua").style.display="none";
+	
+}
+
+</script>
+
+</body>
+</html>

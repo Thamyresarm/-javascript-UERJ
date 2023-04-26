@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Praticando geolocalização</h1>
+
+<p>Clique para saber onde fica</p>
+
+<button onclick="getLocation()">Clique me!</button>
+
+<script>
+
+
+function getLocation() {
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(ondeFica);
+  }else { 
+    document.write('Navegador não suporta o serviço de Geolocalização');
+  }
+}
+
+function ondeFica(local) {
+  document.write("Latitude: " + local.coords.latitude + "<br>Longitude: " + local.coords.longitude);
+}
+</script>
+
+</body>
+</html>

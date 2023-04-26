@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Praticando Upload de Arquivos - FormData - 03</h1>
+
+
+
+<body>
+
+<!------------------------------------------- Início  Area  Modal Upload do Projeto   ----------------------------------->
+	
+		<div id="modalApresentarUDTUploadProjeto" class="modal_enviar_precatorio"  style="display:block;">
+			<fieldset style="display:block;" id="selecionarProjetoFieldset">
+			
+				<legend >Enviar Cópia do Projeto</legend></br>			
+					<span id="msgSubtituloEnviarProjeto"></span></br>
+									
+					</br>	
+					<label for="fileInputDadosProjeto">Clique aqui para selecionar o arquivo</label></br>
+						
+						<input type="file" name="files[]" id="fileInputDadosProjeto"  />
+						<p id="msgArquivoProjetoSelecionado" style="color:#ffffff;display:none;"></p>
+						<a href="javascript:void(0)" id="botaoEnviarProjeto"  onclick="enviaDadosProjeto();" title="Submeter informações do Projeto"  >Clique aqui para Enviar</a> 
+						<a href="javascript:void(0)" onclick="cancelarModalUpload()"  style="color:#ffffff" />Cancelar/Sair</a>
+											
+				
+			</fieldset>	
+			</br>
+			</br>
+			</br>
+			</br>
+			<p  id="msgDadosEnviarProjeto" style="font-size:1.0vw;color:#ffffff"></p>	
+			</br>
+			</br>
+			</br>
+			</br>
+		</div>
+
+<script>
+document.getElementById('fileInputDadosProjeto').addEventListener('change',	handleFileSelectProjeto);	
+/*------------------------------------------------------------------------------------------------------------------------------------*/
+function handleFileSelectProjeto(evt){
+	var files = evt.target.files;
+	document.getElementById("msgArquivoProjetoSelecionado").style.display="block";
+	document.getElementById("msgArquivoProjetoSelecionado").innerHTML = "Arquivo Selecionado: " +  files[0].name;
+	document.getElementById("msgDadosEnviarProjeto").innerHTML ="";
+}
+/*------------------------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------*/
+function cancelarModalUpload(){	
+	document.getElementById("modalApresentarUDTUploadProjeto").style.display="none";	
+}
+/*---------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------------------------------------*/
+function enviaDadosProjeto(){
+	
+	var input = document.getElementById('fileInputDadosProjeto');
+	document.getElementById("msgDadosEnviarProjeto").innerHTML=='';
+	
+    if (!input.files) { 
+        alert.error("O seu navegador não suporta esta a facilidade de enviar documentos!");
+    } else if(!input.files[0]) {
+        document.getElementById("msgDadosEnviarProjeto").innerHTML="Antes de enviar é necessário selecionar um arquivo!";
+    }	
+	else if(input.files.length==0){
+		document.getElementById("msgDadosEnviarProjeto").innerHTML="Antes de enviar é necessário selecionar um arquivo!";		
+	}
+	
+	else if((input.files[0].type).indexOf('/pdf')<=0){
+		document.getElementById("msgDadosEnviarProjeto").innerHTML="Tipo do arquivo deve ser pdf!";
+	}
+	else{
+		
+		 formData = new FormData();
+		for (i = 0; i < input.files.length; i++) {
+			//let file = input.files[i];
+			formData.append('files[]', input.files[i]);							
+		}
+		formData.append('cpf', '12345689011');
+		fetch("http://152.92.181.90:8080/CadastroPrimario/CadastroInicialMulti", {method: 'POST',body: formData,}).then(response =>{
+			return response.json();
+			})
+			.then(data =>{
+						if(data.erro==false) {				
+							document.getElementById("msgDadosEnviarProjeto").innerHTML="Documento enviado com sucesso!";
+							document.getElementById("botaoEnviarProjeto").style.visibility = "hidden";
+						}
+						else {
+							document.getElementById("msgDadosEnviarProjeto").innerHTML=data.msg;
+						}
+			});		
+	}
+	
+		
+}
+
+/*---------------------------------------------------------------*/
+</script>
+</body>
+<style>
+.modal_enviar_precatorio{
+  color:#ffffff;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 20%;
+  width: 50%; /* Full width */
+  height:50%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: #12174C;
+  padding-top: 15px;
+  padding-left:20px;
+  margin: 1% auto 15% auto;
+  border-radius:10px;
+}
+.modal_enviar_precatorio label{  
+  color: white;  
+  font-size: 0.8vw;  
+}
+.modal_enviar_precatorio fieldset{    
+  border: none;
+  font-size: 1.0vw;    
+}
+.modal_enviar_precatorio select{    
+  width: 50%;  
+}
+.modal_enviar_precatorio a{    
+  text-decoration: none;
+  font-size: 0.8vw;
+  width: 95%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-weight: bold;
+  background-color:#fb8500; 
+  color: #12174C; 
+  text-align:center;
+}
+.modal_enviar_precatorio input[type="file"] {
+    display: none;
+}
+.modal_enviar_precatorio label {
+    padding: 20px 10px;
+    width:20%px;
+    background-color: #55587D;
+    color: white;
+ //   text-transform: uppercase;
+    text-align: left;
+    display: block;
+	font-size: 1.0vw;
+    margin-top: 10px;
+    cursor: pointer;
+	border-radius: 4px;
+}
+#DadosPrecatorio{
+  background-color:#FB8500;
+  color:#12174C;
+  font-size: 0.8vw; 
+ padding: 10px 30px;  
+}
+
+.modalSpinner {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 				
+                50% 50% 
+                no-repeat;
+}
+</style>
+</html>		

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Praticando o método setTimeout() - 01</h1>
+
+
+<button onclick="relogio()">Clique para disparar em 5 segundos!</button>
+<p id="relogio"></p>
+<script>
+let timeout;
+let contador=1;
+function relogio() {
+  timeout = setTimeout(disparar,5000);
+}
+
+function disparar() {
+  document.getElementById("relogio").innerHTML="Partiu!!! " + contador++;  
+}
+</script>
+
+</body>
+</html>
